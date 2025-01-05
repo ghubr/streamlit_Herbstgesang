@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Dec 31 18:08:29 2024
-
 @author: Gerhard
+
 """
 
 
@@ -24,6 +23,11 @@ map_months = { i:["Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep",
 #         "Art wählen:",
 #         ("Amsel", "Buchfink", "Fitis")
 #     )
+
+
+st.title("Herbstgesang")
+st.caption("Ein ASO-Projekt im Landkreis Starnberg")
+# st.caption()
 
 tab1, tab2, tab3, tab4 = st.tabs(["Meldungen", "Melder", "Arten", "Phänologien"])
 
@@ -47,12 +51,11 @@ with tab1:
     
 with tab2:
     st.header("Anzahl der Melder mit Gesangs-Meldungen")
-    df = pd.read_csv(os.path.join(pathToData, "stdat_Meldungen_pro_Monat.csv"))
-    st.header("Gesangs-Meldungen pro Monat")
+    df = pd.read_csv(os.path.join(pathToData, "stdat_Melder_pro_Monat.csv"))
     # make year categorical
     df["DATE_YEAR"] = pd.Categorical(df.DATE_YEAR)#.astype(cat)
     # st.bar_chart(df, x="DATE_MONTH", y="OBSERVATIONS", stack=False)
-    st.bar_chart(df, x="DATE_MONTH", y="OBSERVATIONS", color="DATE_YEAR", stack=False)
+    st.bar_chart(df, x="DATE_MONTH", y="MELDER", color="DATE_YEAR", stack=False)
     # st.image(os.path.join(pathToData, "Singsang-Meldungen_je_Monat.png"))
     st.text("Melder von Gesangs-Meldungen je Monat. Gesangs-Kommentare wurden 12/2023 vorgestellt. Das Projekt begann 8/2024.")
 
@@ -73,7 +76,8 @@ with tab4:
     # df = pd.read_csv(os.path.join(pathToData, "stdat_Phaenologien_der_Arten.csv"))
     species_available = df.TAXON.unique()
     
-    species = df.groupby('TAXON').size()
+    species = df.groupby('TAXON').OBSERVATIONS.sum()
+    st.dataframe(species)
     species = species[species>10].index.to_numpy()
     
     option_art = st.selectbox(
@@ -89,7 +93,7 @@ with tab4:
             d,
             x = 'DATE_DECADE',
             y = 'OBSERVATIONS'
-            )
+        )
         
     
 

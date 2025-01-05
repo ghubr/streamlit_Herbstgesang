@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Dec 31 18:08:29 2024
-
 @author: Gerhard
 """
 
