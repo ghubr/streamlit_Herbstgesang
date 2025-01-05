@@ -30,12 +30,12 @@ tab1, tab2, tab3, tab4 = st.tabs(["Meldungen", "Melder", "Arten", "Phänologien"
 imwidth = 600
 with tab1:
     st.header("Gesangs-Meldungen pro Jahr")
-    df = pd.read_csv(os.path.join(pathToData, "Meldungen_pro_Jahr.csv")).set_index('DATE_YEAR')
+    df = pd.read_csv(os.path.join(pathToData, "stdat_Meldungen_pro_Jahr.csv")).set_index('DATE_YEAR')
     st.bar_chart(df)
     # st.image(os.path.join(pathToData, "Singsang-Meldungen_pro_Jahr.png"))
     st.text("Gesangs-Meldungen (Meldungen mit 'Gesang' o.ä. im Kommentar) pro Jahr. Das Projekt wurde erstmals 2024 durchgeführt")
     
-    df = pd.read_csv(os.path.join(pathToData, "Meldungen_pro_Monat.csv"))
+    df = pd.read_csv(os.path.join(pathToData, "stdat_Meldungen_pro_Monat.csv"))
     st.header("Gesangs-Meldungen pro Monat")
     # make year categorical
     df["DATE_YEAR"] = pd.Categorical(df.DATE_YEAR)#.astype(cat)
@@ -47,7 +47,7 @@ with tab1:
     
 with tab2:
     st.header("Anzahl der Melder mit Gesangs-Meldungen")
-    df = pd.read_csv(os.path.join(pathToData, "Meldungen_pro_Monat.csv"))
+    df = pd.read_csv(os.path.join(pathToData, "stdat_Meldungen_pro_Monat.csv"))
     st.header("Gesangs-Meldungen pro Monat")
     # make year categorical
     df["DATE_YEAR"] = pd.Categorical(df.DATE_YEAR)#.astype(cat)
@@ -58,7 +58,7 @@ with tab2:
 
 with tab3:
     st.header("Arten mit Gesangs-Meldungen (Aug-Dez)")
-    df = pd.read_csv(os.path.join(pathToData, "Arten_pro_Jahr.csv"))
+    df = pd.read_csv(os.path.join(pathToData, "stdat_Arten_pro_Jahr.csv"))
     
     # select Aug-Dez
     df = df[df.DATE_MONTH>=8]
@@ -69,7 +69,7 @@ with tab4:
     st.header("Phänologien")
     
     # Read data
-    df = pd.read_csv(os.path.join(pathToData, "Meldungen_je_Art_und_Monat.csv"))
+    df = pd.read_csv(os.path.join(pathToData, "stdat_Meldungen_je_Art_und_Monat.csv"))
     species_available = df.TAXON.unique()
     
     species = df.groupby('TAXON').size()
