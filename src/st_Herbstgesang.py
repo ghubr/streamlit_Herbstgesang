@@ -70,6 +70,7 @@ with tab4:
     
     # Read data
     df = pd.read_csv(os.path.join(pathToData, "stdat_Meldungen_je_Art_und_Monat.csv"))
+    # df = pd.read_csv(os.path.join(pathToData, "stdat_Phaenologien_der_Arten.csv"))
     species_available = df.TAXON.unique()
     
     species = df.groupby('TAXON').size()
@@ -79,7 +80,7 @@ with tab4:
         "Art wählen:",
         species
     )
-    st.write("Gewählt:", option_art)
+    st.write("Phänologie der Gesangsmeldungen (Aug-Dez) für", option_art, ".")
     
     if option_art in species_available:
         d = df[df.TAXON==option_art]
