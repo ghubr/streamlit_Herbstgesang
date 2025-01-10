@@ -80,23 +80,38 @@ with tab3:
 with tab4:
     st.header("Phänologien")
     
-    obs_count_min = 20
-    
+    obs_count_min = 10
+    df = pd.read_csv(os.path.join(pathToData, "stdat_Phaenologien_der_Arten.csv"))
+    species = df.groupby('TAXON').GesangOhneA2.sum().sort_values(ascending=False)
+    st.dataframe(df, width=600)
+    species = species[species>=obs_count_min]
+    for tx, d in df.groupby('TAXON'):
+        if tx not in species:
+            continue
+        st.write("Phänologie nice der Gesangsmeldungen für", tx, ".")
+        d = df[df.TAXON==tx].set_index('DATE_DECADE')
+        st.bar_chart(
+            d[['A2ohneGesang', 'A2mitGesang', 'GesangOhneA2']],#, 'wederA2nochGesang']],
+            #x = 'DATE_DECADE',
+            y = ['A2ohneGesang', 'A2mitGesang', 'GesangOhneA2'],#, 'wederA2nochGesang'],
+            color = ['#ff0000', '#ff00ff', '#0000ff'],#, '#999999'],
+            stack = True,
+            x_label = "Dekade",
+            y_label = "Meldungen"
+        )
+
+
     # Read data
+    obs_count_min = 20
     df = pd.read_csv(os.path.join(pathToData, "stdat_Meldungen_je_Art_und_Monat.csv"))
-    # df = pd.read_csv(os.path.join(pathToData, "stdat_Phaenologien_der_Arten.csv"))
     species_available = df.TAXON.unique()
     
     species = df.groupby('TAXON').OBSERVATIONS.sum().sort_values(ascending=False)
     st.dataframe(species, width=600)
     species = species[species>=obs_count_min]
-    
-    # tx = st.selectbox(
-    #     "Art wählen:",
-    #     species.index.to_numpy()
-    # )
-    
-    for tx, cnt in species.items():
+    for tx, d in df.groupby('TAXON'):
+        if tx not in species:
+            continue
         st.write("Phänologie der Gesangsmeldungen (Aug-Dez) für", tx, ".")
         d = df[df.TAXON==tx]
         d = d[d.DATE_DECADE>=22] # Aug-Dez
@@ -108,8 +123,6 @@ with tab4:
         )
     
     
-
-
 
 
 # df = pd.DataFrame(np.random.randn(500, 2) / [50, 50] + [37.76, -122.4],columns=['lat', 'lon'])
