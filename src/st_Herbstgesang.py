@@ -80,7 +80,7 @@ with tab3:
 with tab4:
     st.header("Phänologien")
     
-    obs_count_min = 10
+    obs_count_min = 40
     df = pd.read_csv(os.path.join(pathToData, "stdat_Phaenologien_der_Arten.csv"))
     species = df.groupby('TAXON').GesangOhneA2.sum().sort_values(ascending=False)
     st.dataframe(species, width=600)
@@ -88,7 +88,7 @@ with tab4:
     for tx, d in df.groupby('TAXON'):
         if tx not in species:
             continue
-        st.write("Phänologie nice der Gesangsmeldungen für", tx, ".")
+        st.write("Phänologie der Gesangsmeldungen für " + tx + f" ({int(species[tx])} Gesangsmeldungen ohne A2).")
         d = df[df.TAXON==tx].drop(columns='TAXON').set_index('DATE_DECADE')
         reorder = {'A2ohneGesang':'4_A2ohneGesang', 'A2mitGesang':'3_A2mitGesang', 'GesangOhneA2':'2_GesangOhneA2', 'wederA2nochGesang':'1_wederA2nochGesang'}
         d = d.rename(columns=reorder)
