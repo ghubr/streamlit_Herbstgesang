@@ -75,26 +75,28 @@ with tab3:
     df = df[df.DATE_MONTH>=8]
     # df['DATE_MONTH'] = df['DATE_MONTH'].map(map_months)
     st.bar_chart(df, x='DATE_MONTH', stack=False)
-    
-    
+
+
 with tab4:
     st.header("Phänologien")
     
     obs_count_min = 10
     df = pd.read_csv(os.path.join(pathToData, "stdat_Phaenologien_der_Arten.csv"))
     species = df.groupby('TAXON').GesangOhneA2.sum().sort_values(ascending=False)
-    st.dataframe(df, width=600)
+    st.dataframe(species, width=600)
     species = species[species>=obs_count_min]
     for tx, d in df.groupby('TAXON'):
         if tx not in species:
             continue
         st.write("Phänologie nice der Gesangsmeldungen für", tx, ".")
-        d = df[df.TAXON==tx].set_index('DATE_DECADE')
+        d = df[df.TAXON==tx].drop(columns='TAXON').set_index('DATE_DECADE')
+        reorder = {'A2ohneGesang':'4_A2ohneGesang', 'A2mitGesang':'3_A2mitGesang', 'GesangOhneA2':'2_GesangOhneA2', 'wederA2nochGesang':'1_wederA2nochGesang'}
+        d = d.rename(columns=reorder)
         st.bar_chart(
-            d[['A2ohneGesang', 'A2mitGesang', 'GesangOhneA2']],#, 'wederA2nochGesang']],
+            d[reorder.values()],
             #x = 'DATE_DECADE',
-            y = ['A2ohneGesang', 'A2mitGesang', 'GesangOhneA2'],#, 'wederA2nochGesang'],
-            color = ['#ff0000', '#ff00ff', '#0000ff'],#, '#999999'],
+            #y = ['A2ohneGesang', 'A2mitGesang', 'GesangOhneA2'],#, 'wederA2nochGesang'],
+            color = ['#0000dd', '#dd00dd', '#dd0000', '#dddddd'][::-1],
             stack = True,
             x_label = "Dekade",
             y_label = "Meldungen"
