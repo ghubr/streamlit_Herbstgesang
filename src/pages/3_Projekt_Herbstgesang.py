@@ -23,13 +23,20 @@ map_months = { i:["Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep",
 #     )
 
 
-st.title("Herbstgesang")
+st.title("Projekt Herbstgesang")
 st.caption("Ein ASO-Projekt im Landkreis Starnberg")
 # st.caption()
 
-tab1, tab2, tab3, tab4 = st.tabs(["Meldungen", "Melder", "Arten", "Phänologien"])
+tab_intro, tab1, tab2, tab3, tab4 = st.tabs(["Intro", "Meldungen", "Melder", "Arten", "Phänologien"])
 
 imwidth = 600
+with tab_intro:
+    st.write("""Der Herbstgesang der Vögel ist ein wenig untersuchtes Phänomen.\ 
+            Außerhalb der Brutzeit werden Gesangsmeldungen selten als solche gemeldet,\ 
+            wodurch die Information über die Gesangsaktivität nicht dokumentiert wird.""")
+    st.write("""Im Herbst 2024 hat die ASO Gesangsmeldungen (August-Dezember) unter\
+    Verwendung der Kommentare in [ornitho.de](https://www.ornitho.de/) markiert. Eine Auswertung der Ergebnisse ist hier zu finden.""")
+    
 with tab1:
     st.header("Gesangs-Meldungen pro Jahr")
     df = pd.read_csv(os.path.join(pathToData, "stdat_Meldungen_pro_Jahr.csv")).set_index('DATE_YEAR')
